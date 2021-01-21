@@ -18,6 +18,8 @@ public class TowerManager : Loader<TowerManager>
     Collider2D buildTile;
     GameObject towerBox;
 
+    bool isTowerRadius;
+
     public TowerButton TowerBtnPresse
     {
         get
@@ -36,6 +38,7 @@ public class TowerManager : Loader<TowerManager>
         buildTile = GetComponent<Collider2D>();
         towerBox = GameObject.Find("Towers");
         spriteRenderer.enabled = false;
+        isTowerRadius = true;
     }
 
     // Update is called once per frame
@@ -71,15 +74,24 @@ public class TowerManager : Loader<TowerManager>
                 {
                     Manager.Instance.Hit2D = hit;
                     Manager.Instance.Setting = Instantiate(setting, GameObject.FindGameObjectWithTag("Canvas").transform);
+
                     GameObject settingPos = Manager.Instance.Setting;
                     towerControl = hit.collider.GetComponent<TowerControl>();
+
                     priceUpdate = settingPos.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<Text>();
                     priceUpdate.text = (towerControl.TowerPrice * 2).ToString();
                     addDestroy = settingPos.transform.GetChild(1).transform.GetChild(0).transform.GetChild(0).GetComponent<Text>();
                     addDestroy.text = (towerControl.TowerPrice / 2).ToString();
                     settingPos.transform.position = towerControl.transform.position;
+
+                    if(GameObject.Find("Circle(Clone)") == null)
+                    {
+                        Instantiate(towerControl.AttackRadiosSprite, towerControl.transform.position, transform.rotation);
+
+                        GameObject radius = GameObject.Find("Circle(Clone)");
+                        radius.transform.localScale = new Vector3(towerControl.AttackRadius * 2, towerControl.AttackRadius * 2, 1f);
+                    }
                 }
-                
             }
         }
 
@@ -88,7 +100,7 @@ public class TowerManager : Loader<TowerManager>
             FollowMouse();
         }
 
-        if(GameObject.Find("Circle(Clone)") != null)
+        if(GameObject.Find("Circle(Clone)") != null && isTowerRadius)
         {
             GameObject radius = GameObject.Find("Circle(Clone)");
             radius.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -100,6 +112,11 @@ public class TowerManager : Loader<TowerManager>
     {
         Destroy(Manager.Instance.Setting.gameObject);
         Manager.Instance.Setting = null;
+
+        if(GameObject.Find("Circle(Clone)") != null)
+        {
+            Destroy(GameObject.Find("Circle(Clone)").gameObject);
+        }
     }
 
     public void UpdateTower()
@@ -190,6 +207,7 @@ public class TowerManager : Loader<TowerManager>
 
             GameObject radius = GameObject.Find("Circle(Clone)");
             radius.transform.localScale = new Vector3(tower.AttackRadius * 2, tower.AttackRadius * 2, 1f);
+            isTowerRadius = true;
         }
     }
 
@@ -225,8 +243,6 @@ public class TowerManager : Loader<TowerManager>
     {
         spriteRenderer.enabled = true;
         spriteRenderer.sprite = sprite;
-
-        
     }
 
     public void DisableDrag()
@@ -237,6 +253,7 @@ public class TowerManager : Loader<TowerManager>
         if(GameObject.Find("Circle(Clone)") != null)
         {
             Destroy(GameObject.Find("Circle(Clone)").gameObject);
+            isTowerRadius = false;
         }
     }
 }
