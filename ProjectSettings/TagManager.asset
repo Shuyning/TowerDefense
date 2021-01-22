@@ -23,6 +23,7 @@ TagManager:
   - DeleteTower
   - ExitTower
   - Canvas
+  - ProjectileBox
   layers:
   - Default
   - TransparentFX

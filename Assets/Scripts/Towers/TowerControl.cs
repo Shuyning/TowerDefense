@@ -9,9 +9,9 @@ public class TowerControl : MonoBehaviour
     [SerializeField] float speedProjectile;
     [SerializeField] Projectiles projectile;
     [SerializeField] int towerPrice;
-    
-    GameObject towerSetting;
     [SerializeField] GameObject attackRadiosSprite;
+
+    GameObject towerSetting;
     Enemy targetEnemy = null;
     GameObject towerSide;
     GameObject projectileBox;
@@ -110,7 +110,7 @@ public class TowerControl : MonoBehaviour
     public void Attack()
     {
         isAttacking = false;
-        Projectiles newProjectile = Instantiate(projectile) as Projectiles;
+        Projectiles newProjectile = Instantiate(projectile, projectileBox.transform) as Projectiles;
         newProjectile.transform.localPosition = transform.localPosition;
 
         if(newProjectile.PType == projectileType.arrow)
@@ -217,7 +217,6 @@ public class TowerControl : MonoBehaviour
         Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Physics2D.queriesHitTriggers = false;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero);
-        Debug.Log(hit.collider);
         
 
         if(hit.collider.tag.Equals("TowerSideFull"))
