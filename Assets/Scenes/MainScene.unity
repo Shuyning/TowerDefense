@@ -9927,7 +9927,7 @@ PrefabInstance:
     - target: {fileID: 5342302907612059041, guid: e7edf2f43c23f2044b2fa6ea7373ee14,
         type: 3}
       propertyPath: totalWave
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5342302907612059046, guid: e7edf2f43c23f2044b2fa6ea7373ee14,
         type: 3}
